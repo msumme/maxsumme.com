@@ -4,8 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const includeDrafts = import.meta.env.DEV;
+  const hasOwnRoute = new Set(['contact-me']);
   const pages = await getCollection('pages', ({ data }) => includeDrafts || !data.draft);
-  return pages.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  return pages.filter((entry) => !hasOwnRoute.has(entry.id)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;

@@ -1,0 +1,27 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostPreview from '../components/PostPreview.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const POSTS_PER_PAGE = 10;
+  const published = (await getCollection('posts', ({ data }) => !data.draft))
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  return paginate(published, { pageSize: POSTS_PER_PAGE });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const title = page.currentPage === 1 ? 'Max Summe' : `Page ${page.currentPage}`;
+---
+
+<BaseLayout title={title}>
+  <div class="post-stream">
+    {page.data.map((post) => <PostPreview post={post} />)}
+  </div>
+  <nav class="pager" aria-label="Pagination">
+    {page.url.prev ? <a href={page.url.prev}>← Newer</a> : <span />}
+    <span class="pager-count">Page {page.currentPage} of {page.lastPage}</span>
+    {page.url.next ? <a href={page.url.next}>Older →</a> : <span />}
+  </nav>
+</BaseLayout>

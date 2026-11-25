@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Form backend: sign up at https://web3forms.com with the inbox address, paste the access key here.
+// Submissions are emailed to that address; the address itself never appears in the page.
+const WEB3FORMS_ACCESS_KEY = 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY';
+---
+
+<BaseLayout title="Contact">
+  <article class="prose">
+    <h1>Contact</h1>
+    <p>Working on a software organization that isn't performing the way it should? Send a note.</p>
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+      <input type="hidden" name="subject" value="New message from maxsumme.com" />
+      <input type="hidden" name="redirect" value="https://www.maxsumme.com/thanks/" />
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+      <label>Name <input type="text" name="name" required autocomplete="name" /></label>
+      <label>Email <input type="email" name="email" required autocomplete="email" /></label>
+      <label>Message <textarea name="message" required></textarea></label>
+      <button type="submit">Send</button>
+    </form>
+  </article>
+</BaseLayout>

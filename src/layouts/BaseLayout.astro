@@ -1,0 +1,41 @@
+---
+import '../styles/site.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Writing by Max Summe on software organizations, leadership, and getting unstuck.' } = Astro.props;
+const siteName = 'Max Summe';
+const fullTitle = title === siteName ? siteName : `${title} · ${siteName}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={siteName} href="/rss.xml" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="/">{siteName}</a>
+      <nav class="site-nav">
+        <a href="/">Articles</a>
+        <a href="/about/">About</a>
+        <a href="/contact-me/">Contact</a>
+      </nav>
+    </header>
+    <main class="site-main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>© {new Date().getFullYear()} Max Summe</span>
+      <a href="/rss.xml">RSS</a>
+    </footer>
+  </body>
+</html>

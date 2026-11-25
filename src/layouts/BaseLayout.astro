@@ -6,9 +6,16 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Writing by Max Summe on software organizations, leadership, and getting unstuck.' } = Astro.props;
 const siteName = 'Max Summe';
-const fullTitle = title === siteName ? siteName : `${title} · ${siteName}`;
+const tagline = 'On Building Software with Teams';
+const { title, description = `${siteName} | ${tagline}` } = Astro.props;
+const fullTitle = title === siteName ? `${siteName} | ${tagline}` : `${title} · ${siteName}`;
+const path = Astro.url.pathname;
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/contact-me/', label: 'Contact' },
+  { href: '/about/', label: 'About' },
+];
 ---
 
 <!doctype html>
@@ -19,15 +26,22 @@ const fullTitle = title === siteName ? siteName : `${title} · ${siteName}`;
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={siteName} href="/rss.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cinzel&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Lustria&display=swap"
+    />
     <title>{fullTitle}</title>
   </head>
   <body>
     <header class="site-header">
       <a class="site-name" href="/">{siteName}</a>
+      <p class="site-tagline">{tagline}</p>
       <nav class="site-nav">
-        <a href="/">Articles</a>
-        <a href="/about/">About</a>
-        <a href="/contact-me/">Contact</a>
+        {navItems.map((item) => (
+          <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+        ))}
       </nav>
     </header>
     <main class="site-main">
